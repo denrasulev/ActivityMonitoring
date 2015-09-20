@@ -2,12 +2,29 @@
 title: "Reproducible Research: Peer Assessment 1"
 output: 
   html_document:
-    keep_md: true
+    fig_width: 5
+    keep_md: yes
+    number_sections: yes
+    toc: yes
 ---
 
 
 ## Loading and preprocessing the data
 
+# if required file is not present in our working directory, then download zip file, extract it to WD and delete temp file.
+if(!file.exists("activity.csv")) {
+        # create temporary file with random name
+        temp <- tempfile()
+        # download zip archive
+        download.file("http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip", temp)
+        # extract it
+        unzip(temp)
+        # delete temporary file
+        unlink(temp)
+}
+
+# read data in
+data <- read.csv("activity.csv")
 
 
 ## What is mean total number of steps taken per day?
