@@ -4,7 +4,6 @@ output:
   html_document:
     fig_width: 5
     keep_md: yes
-    number_sections: yes
     toc: yes
 ---
 
@@ -58,7 +57,7 @@ df$date <- as.Date(df$date, "%Y-%m-%d")
 * calculate total number of steps per day
 * create histogram
 
-```{r}
+```{r fig.align = "center"}
 # calculate total number of steps per day
 steps <- aggregate(steps ~ date, df, sum)
 
@@ -90,7 +89,7 @@ Median: **`r median(steps$steps)`**
 
 * make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r fig.width = 10}
+```{r fig.width = 10, fig.height = 8, fig.align = "center"}
 # average number of steps for each interval for all days
 interval <- aggregate(steps ~ interval, df, mean)
 
@@ -144,7 +143,7 @@ for (i in 1:nrow(df)) {
 
 4. Make a histogram of the total number of steps taken each day and calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
 What is the impact of imputing missing data on the estimates of the total daily number of steps?
-```{r}
+```{r fig.align = "center"}
 # calculate updated total number of steps 
 steps.new <- aggregate(steps ~ date, df, sum)
 
@@ -170,12 +169,12 @@ median(steps.new$steps)
 Do these values differ from the estimates from the first part of the assignment?
 Yes, they differ slightly.
 
-Before imputing                                | After imputing
------------------------------------------------|------------------------------------
-Mean: **`r as.integer(mean(steps$steps))`**    | Mean  : **`r as.integer(mean(steps.new$steps))`**
-Median: **`r as.integer(median(steps$steps)`** | Median: **`r as.integer(median(steps.new$steps)`**
+Before imputing                     | After imputing
+------------------------------------|------------------------------------
+Mean: **`r mean(steps$steps)`**     | Mean  : **`r mean(steps.new$steps)`**
+Median: **`r median(steps$steps)`** | Median: **`r median(steps.new$steps)`**
 
-Mean and median after imputing the data are equal.
+Mean and median after imputing the data became equal.
 
 What is the impact of imputing missing data on the estimates of the total daily number of steps?
 Median value has changed (slightly increased) and equals to the mean.
@@ -184,7 +183,7 @@ Median value has changed (slightly increased) and equals to the mean.
 * Create a new factor variable in the dataset with two levels: weekday” and “weekend
 * Build plot to compare
 
-```{r fig.width = 10, fig.align = "center"}
+```{r fig.width = 10, fig.height = 8, fig.align = "center"}
 # find day of week from the date
 day  <- weekdays(df$date)
 

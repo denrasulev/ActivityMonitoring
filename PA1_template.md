@@ -119,7 +119,7 @@ hist(steps$steps,
 axis(2, las = 2)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+<img src="PA1_template_files/figure-html/unnamed-chunk-4-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 * calculate **mean** and **median** of the number of steps
 
@@ -139,8 +139,9 @@ median(steps$steps)
 ## [1] 10765
 ```
 
-Mean  : 1.0766189\times 10^{4}
-Median: 10765
+Mean  : **10766**
+
+Median: **10765**
 
 ## What is the average daily activity pattern?
 
@@ -165,7 +166,7 @@ axis(1, at = seq(100, 2500, by = 100), las = 2)
 axis(2, las = 2)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+<img src="PA1_template_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 * find 5-minute interval that contains the maximum of steps, on average across all days
 
@@ -180,7 +181,7 @@ max
 ## 104      835 206.1698
 ```
 
-Interval number 835 contains maximum number of steps - 206
+Interval number **835** contains maximum number of steps: **206**
 
 ## Imputing missing values
 
@@ -197,9 +198,10 @@ sum(is.na(df))
 ## [1] 2304
 ```
 
-The number of NA's is **2304**.
+Total number of NA's is **2304**.
 
 2. Devise a strategy for filling in all of the missing values in the dataset
+
 NA values will be replaced by the mean number of steps per identical 5-minute interval (calculated earlier)
 
 3. Create a new dataset with the missing data filled in
@@ -231,7 +233,7 @@ hist(steps.new$steps,
 axis(2, las = 2)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
+<img src="PA1_template_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 # calculate new mean and median values
@@ -256,12 +258,12 @@ median(steps.new$steps)
 Do these values differ from the estimates from the first part of the assignment?
 Yes, they differ slightly.
 
-Before imputing                 | After imputing
---------------------------------|------------------------------------
-Mean  : 1.0766189\times 10^{4}   | Mean  : 1.0766189\times 10^{4}
-Median: 10765 | Median: 1.0766189\times 10^{4}
+Before imputing                     | After imputing
+------------------------------------|------------------------------------
+Mean: **1.0766189\times 10^{4}**     | Mean  : **1.0766189\times 10^{4}**
+Median: **10765** | Median: **1.0766189\times 10^{4}**
 
-Mean and median after imputing the data are equal.
+Mean and median after imputing the data became equal.
 
 What is the impact of imputing missing data on the estimates of the total daily number of steps?
 Median value has changed (slightly increased) and equals to the mean.
@@ -307,7 +309,7 @@ xyplot(steps ~ interval | type,
        main = "Average Steps per Day by Interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+<img src="PA1_template_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 # Conclusion
 As we can see weekdays are more active in the earlier time (closer to the left edge of the graph) and then averaging through the course of the day with higher peaks closer to evening times (right part of the graph). Weekends activities start in later times and with higher peaks throught the daytime meaning more activity overall. Current pattern may belong to an office worker.
