@@ -8,13 +8,20 @@ output:
     toc: yes
 ---
 
+## Prepare environment
+```{r}
+library("graphics")
+
+```
+
+
 ## Load the data
 If required file is not present in our working directory:
-- download zip file
-- extract it to WD
-- delete temp file
-- clear memory
-- read data
+* download zip file
+* extract it to WD
+* delete temp file
+* clear memory
+* read data
 
 ```{r}
 if(!file.exists("activity.csv")) {
@@ -35,10 +42,10 @@ df <- read.csv("activity.csv")
 ```
 
 ## Explore the data
-- number, names, types of variables
-- number of observations including missing values
-- basic stats: mins, maxes, etc
-- see some actual data
+* number, names, types of variables
+* number of observations including missing values
+* basic stats: mins, maxes, etc
+* see some actual data
 
 ```{r}
 str(df)
@@ -48,21 +55,21 @@ tail(df)
 ```
 
 ## Preprocess the data
-- convert 'date' variable to correct class (Factor -> Date)
-- convert 'interval' variable to more suitable class (Int -> Factor)
-- remove observations with NA values
+* convert 'date' variable to correct class (Factor -> Date)
+* convert 'interval' variable to more suitable class (Int -> Factor)
+* remove observations with NA values
 
 ```{r}
 df$date <- as.Date(df$date, "%Y-%m-%d")
-df$interval <- as.factor(df$interval)
+#df$interval <- as.factor(df$interval)
 df.tidy <- na.omit(df)
 str(df.tidy)
 ```
 
 ## What is mean total number of steps taken per day?
-- calculate total number of steps per day
-- show some new data
-- create histogram
+* calculate total number of steps per day
+* show some new data
+* create histogram
 
 ```{r}
 steps <- aggregate(steps ~ date, df, sum)
@@ -75,18 +82,42 @@ hist(steps$steps,
      main = "Total number of steps a day")
 ```
 
-- calculate **mean** and **median** of the number of steps
+* calculate **mean** and **median** of the number of steps
 ```{r}
 mean(steps$steps)
 median(steps$steps)
 ```
 
-Mean  : mean(steps$steps)
-Median: median(steps$steps)
+Mean  : `r mean(steps$steps)`
+Median: `r median(steps$steps)`
 
 ## What is the average daily activity pattern?
 
+* make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+```{r}
+# average number of steps for each interval for all days
+interval <- aggregate(steps ~ interval, df.tidy, mean)
 
+# plot the average number of steps per day by interval
+plot(interval$interval, interval$steps,
+     lwd  = 2,
+     xaxt = "n",
+     yaxt = "n",
+     type = "l",
+     col  = "blue",
+     xlab = "Interval",
+     ylab = "Average Number of Steps",
+     main = "Average Number of Steps per Day by Interval")
+axis(1, at = seq(100, 2500, by = 100), las = 2)
+axis(2, las = 2)
+```
+
+* find 5-minute interval that contains the maximum of steps, on average across all days
+```{r}
+max <- interval[which.max(interval$steps),]
+```
+
+Interval number `r max$interval` contains maximum number of steps - `r as.integer(max$steps)`
 
 ## Imputing missing values
 
