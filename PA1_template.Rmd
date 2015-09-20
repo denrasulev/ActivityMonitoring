@@ -70,7 +70,7 @@ hist(steps$steps,
      breaks = 10,
      xlab = "Number of steps",
      xlim = c(0, 25000),
-     ylim = c(0, 20), 
+     ylim = c(0, 25), 
      main = "Total number of steps a day")
 ```
 
@@ -89,9 +89,6 @@ Median: `r median(steps$steps)`
 ```{r}
 # average number of steps for each interval for all days
 interval <- aggregate(steps ~ interval, df.tidy, mean)
-
-# convert all values to an integer numbers
-#interval$steps <- as.integer(interval$steps)
 
 # plot the average number of steps per day by interval
 plot(interval$interval, interval$steps,
@@ -127,26 +124,35 @@ sum(is.na(df))
 The number of NA's is **`r sum(is.na(df))`**.
 
 2. Devise a strategy for filling in all of the missing values in the dataset
-I will replace NA values with the mean number of steps per same 5-minute interval
-```{r}
-# use data frame, prepared on previous step
-# round values to integer
-interval$steps <- round(interval$steps, 0)
-```
+NA values will be replaced by the mean number of steps per identical 5-minute interval
 
 3. Create a new dataset with the missing data filled in
 ```{r}
-# replace NA values with mean number of steps per same 5-minute interval
+# replace NA values by the mean number of steps per identical 5-minute interval
 for (i in 1:nrow(df)) {
     if(is.na(df$steps[i]))
-       df$steps[i] <- interval$steps[df$interval[i] %in% interval$interval]
+        df$steps[i] <- interval$steps[interval$interval == df$interval[i]]
 }
 ```
 
 4. Make a histogram of the total number of steps taken each day and calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
 What is the impact of imputing missing data on the estimates of the total daily number of steps?
 ```{r}
+# calculate updated total number of steps 
+steps.new <- aggregate(steps ~ date, df, sum)
 
+# build histogram
+hist(steps.new$steps,
+     col = "blue",
+     breaks = 10,
+     xlab = "Number of steps",
+     xlim = c(0, 25000),
+     ylim = c(0, 25), 
+     main = "Total number of steps a day")
+
+# calculate new mean and median values
+mean(steps.new$steps)
+median(steps.new$steps)
 ```
 
 
