@@ -8,10 +8,10 @@ output:
     toc: yes
 ---
 
-
 ## Loading and preprocessing the data
+If required file is not present in our working directory, then download zip file, extract it to WD and delete temp file.
 
-# if required file is not present in our working directory, then download zip file, extract it to WD and delete temp file.
+```{r}
 if(!file.exists("activity.csv")) {
         # create temporary file with random name
         temp <- tempfile()
@@ -21,11 +21,23 @@ if(!file.exists("activity.csv")) {
         unzip(temp)
         # delete temporary file
         unlink(temp)
+        # clear memory (delete temp variable)
+        rm(temp)
 }
 
-# read data in
+# read data
 data <- read.csv("activity.csv")
+```
 
+## Explore the dataset
+Get some sense on our data
+
+```{r}
+str(data)
+summary(data)
+head(data)
+tail(data)
+```
 
 ## What is mean total number of steps taken per day?
 
