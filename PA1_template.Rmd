@@ -50,28 +50,30 @@ tail(df)
 ## Preprocess the data
 * convert 'date' variable to correct class (Factor -> Date)
 
-* remove observations with NA values
-
 ```{r}
 df$date <- as.Date(df$date, "%Y-%m-%d")
-df.tidy <- na.omit(df)
-str(df.tidy)
 ```
 
 ## What is mean total number of steps taken per day?
 * calculate total number of steps per day
-* show some new data
 * create histogram
 
 ```{r}
+# calculate total number of steps per day
 steps <- aggregate(steps ~ date, df, sum)
-head(steps)
+
+# create histogram
 hist(steps$steps,
+     col = "blue",
+     yaxt = "n",
      breaks = 10,
      xlab = "Number of steps",
      xlim = c(0, 25000),
      ylim = c(0, 25), 
      main = "Total number of steps a day")
+
+# turn labels on y-axis to be more readable
+axis(2, las = 2)
 ```
 
 * calculate **mean** and **median** of the number of steps
@@ -86,9 +88,10 @@ Median: `r median(steps$steps)`
 ## What is the average daily activity pattern?
 
 * make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+
 ```{r}
 # average number of steps for each interval for all days
-interval <- aggregate(steps ~ interval, df.tidy, mean)
+interval <- aggregate(steps ~ interval, df, mean)
 
 # plot the average number of steps per day by interval
 plot(interval$interval, interval$steps,
@@ -105,8 +108,10 @@ axis(2, las = 2)
 ```
 
 * find 5-minute interval that contains the maximum of steps, on average across all days
+
 ```{r}
 max <- interval[which.max(interval$steps),]
+max
 ```
 
 Interval number `r max$interval` contains maximum number of steps - `r as.integer(max$steps)`
@@ -124,7 +129,7 @@ sum(is.na(df))
 The number of NA's is **`r sum(is.na(df))`**.
 
 2. Devise a strategy for filling in all of the missing values in the dataset
-NA values will be replaced by the mean number of steps per identical 5-minute interval
+NA values will be replaced by the mean number of steps per identical 5-minute interval (calculated earlier)
 
 3. Create a new dataset with the missing data filled in
 ```{r}
@@ -145,16 +150,32 @@ steps.new <- aggregate(steps ~ date, df, sum)
 hist(steps.new$steps,
      col = "blue",
      breaks = 10,
+     yaxt = "n",
      xlab = "Number of steps",
      xlim = c(0, 25000),
      ylim = c(0, 25), 
      main = "Total number of steps a day")
+axis(2, las = 2)
 
 # calculate new mean and median values
 mean(steps.new$steps)
 median(steps.new$steps)
 ```
 
+* Updated data mean  : `r mean(steps.new$steps)`
+* Updated data median: `r median(steps.new$steps)`
 
+Do these values differ from the estimates from the first part of the assignment?
+Yes, they differ slightly.
+
+Before imputing                 | After imputing
+--------------------------------|------------------------------------
+Mean  : `r mean(steps$steps)`   | Mean  : `r mean(steps.new$steps)`
+Median: `r median(steps$steps)` | Median: `r median(steps.new$steps)`
+
+Mean and median after imputing the data are equal.
+
+What is the impact of imputing missing data on the estimates of the total daily number of steps?
+Median value has changed (slightly increased) and equals to the mean.
 
 ## Are there differences in activity patterns between weekdays and weekends?
