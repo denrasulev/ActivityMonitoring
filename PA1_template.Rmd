@@ -8,13 +8,6 @@ output:
     toc: yes
 ---
 
-## Prepare environment
-```{r}
-library("graphics")
-
-```
-
-
 ## Load the data
 If required file is not present in our working directory:
 * download zip file
