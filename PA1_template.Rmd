@@ -49,12 +49,11 @@ tail(df)
 
 ## Preprocess the data
 * convert 'date' variable to correct class (Factor -> Date)
-* convert 'interval' variable to more suitable class (Int -> Factor)
+
 * remove observations with NA values
 
 ```{r}
 df$date <- as.Date(df$date, "%Y-%m-%d")
-#df$interval <- as.factor(df$interval)
 df.tidy <- na.omit(df)
 str(df.tidy)
 ```
@@ -91,6 +90,9 @@ Median: `r median(steps$steps)`
 # average number of steps for each interval for all days
 interval <- aggregate(steps ~ interval, df.tidy, mean)
 
+# convert all values to an integer numbers
+#interval$steps <- as.integer(interval$steps)
+
 # plot the average number of steps per day by interval
 plot(interval$interval, interval$steps,
      lwd  = 2,
@@ -113,6 +115,39 @@ max <- interval[which.max(interval$steps),]
 Interval number `r max$interval` contains maximum number of steps - `r as.integer(max$steps)`
 
 ## Imputing missing values
+
+Note that there are a number of days/intervals where there are missing values (coded as NA).
+The presence of missing days may introduce bias into some calculations or summaries of the data.
+
+1. Calculate and report the total number of missing values in the dataset
+```{r}
+sum(is.na(df))
+```
+
+The number of NA's is **`r sum(is.na(df))`**.
+
+2. Devise a strategy for filling in all of the missing values in the dataset
+I will replace NA values with the mean number of steps per same 5-minute interval
+```{r}
+# use data frame, prepared on previous step
+# round values to integer
+interval$steps <- round(interval$steps, 0)
+```
+
+3. Create a new dataset with the missing data filled in
+```{r}
+# replace NA values with mean number of steps per same 5-minute interval
+for (i in 1:nrow(df)) {
+    if(is.na(df$steps[i]))
+       df$steps[i] <- interval$steps[df$interval[i] %in% interval$interval]
+}
+```
+
+4. Make a histogram of the total number of steps taken each day and calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
+What is the impact of imputing missing data on the estimates of the total daily number of steps?
+```{r}
+
+```
 
 
 
