@@ -179,3 +179,44 @@ What is the impact of imputing missing data on the estimates of the total daily 
 Median value has changed (slightly increased) and equals to the mean.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+* Create a new factor variable in the dataset with two levels: weekday” and “weekend
+* Build plot to compare
+
+```{r}
+# find day of week from the date
+day  <- weekdays(df$date)
+
+# create new variable
+type <- vector()
+
+# determine day of week for every observation
+for (i in 1:nrow(df)) {
+    if (day[i] == "Saturday" || day[i] == "Sunday") {
+        type[i] <- "Weekend"
+    } else {
+        type[i] <- "Weekday"
+    }
+}
+
+# add new variable to the dataset
+df$type <- as.factor(type)
+
+# calculate means groupped by day of week type
+compare <- aggregate(steps ~ interval + type, data = df, mean)
+
+# connect required library
+library("lattice")
+
+# plot the data
+xyplot(steps ~ interval | type,
+       data = compare,
+       lwd=2,
+       type = "l",
+       layout = c(1, 2),
+       xlab = "Interval",
+       ylab = "Number of steps",
+       main = "Average Steps per Day by Interval")
+```
+
+# Conclusion
+As we can see weekdays are more active in the earlier time (closer to the left edge of the graph) and then averaging through the course of the day with higher peaks closer to evening times (right part of the graph). Weekends activities start in later times and with higher peaks throught the daytime meaning more activity overall. Current pattern may belong to an office worker.
