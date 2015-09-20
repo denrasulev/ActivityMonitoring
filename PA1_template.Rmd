@@ -8,8 +8,13 @@ output:
     toc: yes
 ---
 
-## Loading and preprocessing the data
-If required file is not present in our working directory, then download zip file, extract it to WD and delete temp file.
+## Load the data
+If required file is not present in our working directory:
+- download zip file
+- extract it to WD
+- delete temp file
+- clear memory
+- read data
 
 ```{r}
 if(!file.exists("activity.csv")) {
@@ -26,22 +31,58 @@ if(!file.exists("activity.csv")) {
 }
 
 # read data
-data <- read.csv("activity.csv")
+df <- read.csv("activity.csv")
 ```
 
-## Explore the dataset
-Get some sense on our data
+## Explore the data
+- number, names, types of variables
+- number of observations including missing values
+- basic stats: mins, maxes, etc
+- see some actual data
 
 ```{r}
-str(data)
-summary(data)
-head(data)
-tail(data)
+str(df)
+summary(df)
+head(df)
+tail(df)
+```
+
+## Preprocess the data
+- convert 'date' variable to correct class (Factor -> Date)
+- convert 'interval' variable to more suitable class (Int -> Factor)
+- remove observations with NA values
+
+```{r}
+df$date <- as.Date(df$date, "%Y-%m-%d")
+df$interval <- as.factor(df$interval)
+df.tidy <- na.omit(df)
+str(df.tidy)
 ```
 
 ## What is mean total number of steps taken per day?
+- calculate total number of steps per day
+- show some new data
+- create histogram
 
+```{r}
+steps <- aggregate(steps ~ date, df, sum)
+head(steps)
+hist(steps$steps,
+     breaks = 10,
+     xlab = "Number of steps",
+     xlim = c(0, 25000),
+     ylim = c(0, 20), 
+     main = "Total number of steps a day")
+```
 
+- calculate **mean** and **median** of the number of steps
+```{r}
+mean(steps$steps)
+median(steps$steps)
+```
+
+Mean  : mean(steps$steps)
+Median: median(steps$steps)
 
 ## What is the average daily activity pattern?
 
